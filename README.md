@@ -25,12 +25,12 @@ The current scheme of interaction of all project elements is shown in fig.1
 Figure 1 - block diagram of client-server interaction
 
 
-1) Android app in the first start passes registration in GCM server and receives from it GCS registration token.
+1. Android app in the first start passes registration in GCM server and receives from it GCS registration token.
 Note: Registration is only possible if your Android device supports Google Services or set Internet connection. 
-2) After successful registration, the application will connect to event server and log on it. This server is located at notify.tom.ry (personal!)
-3) With occurrence the event on device, it will send data packet to event server, in packet is stored device serial number, notification type and message.
-4) Note: For normal operation on device should be properly configured network settings.
-5) After receiving notice from device, the vent server will send a message with events description on GCM server, which will send a message to Android app and/or user e-mail, specified in settings.
+2. After successful registration, the application will connect to event server and log on it. This server is located at notify.tom.ry (personal!)
+3. With occurrence the event on device, it will send data packet to event server, in packet is stored device serial number, notification type and message.
+4. Note: For normal operation on device should be properly configured network settings.
+5. After receiving notice from device, the vent server will send a message with events description on GCM server, which will send a message to Android app and/or user e-mail, specified in settings.
 
 ## The hardware
 
@@ -55,17 +55,11 @@ ENC28J60 Ethernet module
 Arduino Mega 2560  |  ENC28J60 module
 -------------------|------------------
        D53         |       CS
--------------------|------------------
 	   D51         |       SI
--------------------|------------------
 	   D50         |       SO
--------------------|------------------
 	   D52         |       SCK
--------------------|------------------
 	   3V3         |       VCC
--------------------|------------------
 	   GND         |       GND
--------------------|------------------
 	   
 
 When connecting temperature sensors to other controller ports or when changing output ports, necessary to make changes in controller firmware source code. Input ports and ENC28J60 Ethernet module connection ports can not be changed.
@@ -76,13 +70,13 @@ When connecting temperature sensors to other controller ports or when changing o
 https://www.arduino.cc/en/Main/Software
 
 ### Install required libraries (instructions for installing the libraries: https://www.arduino.cc/en/Guide/Libraries), which are located in «libs» folder:
-base64 - https://github.com/adamvr/arduino-base64
-EEPROM2 - https://github.com/aterentiev/EEPROM2
-ENC28J60_ethernet - https://github.com/ntruchsess/arduino_uip
-OneWire - https://github.com/pbrook/arduino-onewire
-Streaming - https://github.com/kachok/arduino-libraries/tree/master/Streaming
-Webduino - https://github.com/sirleech/Webduino
-DallasTemperature - https://github.com/milesburton/Arduino-Temperature-Control-Library
+- base64 - https://github.com/adamvr/arduino-base64
+- EEPROM2 - https://github.com/aterentiev/EEPROM2
+- ENC28J60_ethernet - https://github.com/ntruchsess/arduino_uip
+- OneWire - https://github.com/pbrook/arduino-onewire
+- Streaming - https://github.com/kachok/arduino-libraries/tree/master/Streaming
+- Webduino - https://github.com/sirleech/Webduino
+- DallasTemperature - https://github.com/milesburton/Arduino-Temperature-Control-Library
 
 ### Unique device serial number
 When launching sketch at the first time, occurring the generation of random 29-bit serial number. This value is assigned to variable “default_serial_number”. Device serial numbers must not coincide.

@@ -69,7 +69,8 @@ When connecting temperature sensors to other controller ports or when changing o
 ### Download and install Arduino IDE on the link:
 https://www.arduino.cc/en/Main/Software
 
-### Install required libraries (instructions for installing the libraries: https://www.arduino.cc/en/Guide/Libraries), which are located in «libs» folder:
+### Install required libraries 
+(instructions for installing the libraries: https://www.arduino.cc/en/Guide/Libraries), which are located in «libs» folder:
 - base64 - https://github.com/adamvr/arduino-base64
 - EEPROM2 - https://github.com/aterentiev/EEPROM2
 - ENC28J60_ethernet - https://github.com/ntruchsess/arduino_uip

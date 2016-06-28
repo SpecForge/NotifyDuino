@@ -27,7 +27,7 @@ Figure 1 - block diagram of client-server interaction
 
 1. Android app in the first start passes registration in GCM server and receives from it GCS registration token.
 Note: Registration is only possible if your Android device supports Google Services or set Internet connection. 
-2. After successful registration, the application will connect to event server and log on it. This server is located at notify.tom.ry (personal!)
+2. After successful registration, the application will connect to event server and log on it. This server is located at notify.tom.ru (personal!)
 3. With occurrence the event on device, it will send data packet to event server, in packet is stored device serial number, notification type and message.
 4. Note: For normal operation on device should be properly configured network settings.
 5. After receiving notice from device, the vent server will send a message with events description on GCM server, which will send a message to Android app and/or user e-mail, specified in settings.

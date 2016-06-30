@@ -46,6 +46,8 @@ const String event2Message = "Pin 19 changed ...";
 const String event3Message = "Pin 20 changed ...";
 const String event4Message = "Pin 21 changed ...";
 
+const String tempEvent1Message = "Temperature out of range !!!";
+
 // Temperature and output pins
 const int TempSensor1Pin = A0;
 const int TempSensor2Pin = A1;
@@ -90,8 +92,9 @@ OneWire  OWTempSensor2(TempSensor2Pin);
 DallasTemperature TempSensor1(&OWTempSensor1);
 DallasTemperature TempSensor2(&OWTempSensor2);
 // Start temperature value
-float TempC1 = -200;
-float TempC2 = -200;
+static const float initTemp = -200;
+float TempC1 = initTemp;
+float TempC2 = initTemp;
 unsigned long temp_timer_start, temp_timer_stop;
 
 // UrlPathCommand contains pointers to the seperate parts of the URL path where '/' was used as the delimiter.
@@ -129,9 +132,12 @@ void UrlPathCommand(WebServer &server, WebServer::ConnectionType type,
               server << F("Content-Type: application/json;charset=utf-8");
               server << F("\n\n");
               server << F("{\"status\":\"successfully\",");
-              server << F("\"tmp_in\":")<<F("\"")<<TempC1<<F("\",");
-              server << F("\"tmp_out\":")<<F("\"")<<TempC2<<F("\",");
-
+              if (TempC1 != initTemp){
+                  server << F("\"tmp1\":")<<F("\"")<<TempC1<<F("\",");
+              }
+              if (TempC2 != initTemp){
+                  server << F("\"tmp2\":")<<F("\"")<<TempC2<<F("\",");
+              }
               server << F("\"e_temp_is_on\":")<<F("\"")<<controlEvents.temperatureEnabled()<<F("\",");
               server << F("\"e_temp_min\":")<<F("\"")<<controlEvents.getMinTemperature()<<F("\",");
               server << F("\"e_temp_max\":")<<F("\"")<<controlEvents.getMaxTemperature()<<F("\",");
@@ -758,14 +764,14 @@ void checkTemperature()
   TempC1 = TempSensor1.getTempCByIndex(0);
   if ((TempC1 < -50) || (TempC1 > 120))
   {
-    TempC1 = -200;
+    TempC1 = initTemp;
   }
   
   TempSensor2.requestTemperatures();
   TempC2 = TempSensor2.getTempCByIndex(0);
   if ((TempC2 < -50) || (TempC2 > 120))
   {
-    TempC2 = -200;
+    TempC2 = initTemp;
   }
 }
 
@@ -794,7 +800,7 @@ void SetOutPin(int state)
 // Main Setup
 void setup()
 { 
-  Serial.begin (115200);
+  Serial.begin (9200);
   
   //getting pins
   byte port1 = DuinoPort::getDigitalPin(DuinoPort::Port_1);
@@ -810,8 +816,10 @@ void setup()
   pinMode(outputPin, OUTPUT);
 
   SerialNumber serial;
-  
-  
+
+  settings->read(DSettings::SerialNumberType,serial);
+
+  //if serial not valid reset all settings to default
   if (!serial.isValid())
   {
     serial = SerialNumber::getDefaultSerialNumber();
@@ -824,7 +832,6 @@ void setup()
   settings->read(DSettings::AutorizationType, autorization);
   settings->read(DSettings::NotificationType ,notification);
   settings->read(DSettings::ControlEventsType ,controlEvents);
-  settings->read(DSettings::SerialNumberType,serial);
   settings->read(DSettings::PortEventsType,portEvents);
   
   Ethernet.begin(network.macData() , network.ipData() , network.dnsData() , network.gateData() , network.maskData());  
@@ -874,6 +881,12 @@ void loop()
   {
     checkTemperature();
     temp_timer_start = temp_timer_stop;
+    if (controlEvents.temperatureEnabled()){
+      // if temperature out of range send notification
+      if (TempC1 < controlEvents.getMinTemperature() || TempC1 > controlEvents.getMaxTemperature()){
+        api->postEvent(notification, tempEvent1Message, serialNumber);
+       }
+    }
   }  
 }
 

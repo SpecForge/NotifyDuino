@@ -6,7 +6,7 @@ This project allows to receive messages from Arduino Mega 2560 controller board 
 For this, you will need:
 * Arduino Mega 2560 controller board
 * ability to appload on controller board the sketch from repository
-* device, operated by Android, for example, your smartphone
+* device, operated by Android 4.0 and higher, for example, your smartphone
 * download and install the app for Android NotifyDuino.apk
 
 
@@ -115,7 +115,8 @@ Appload source code into controller board:
 ## App installation and configuration for Android device
 
 App for Android device, you can download on the link from our site https://specforge.com/downloads/NotifyDuino.apk
-Application settings description, you can find on the address
+Application settings description, you can find on the address.
+Supported Android 4.0 and higher.
 Link to the manual
 
 ## Own event server
